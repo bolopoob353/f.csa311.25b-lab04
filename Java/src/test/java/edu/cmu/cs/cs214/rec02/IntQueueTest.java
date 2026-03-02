@@ -1,8 +1,5 @@
 package edu.cmu.cs.cs214.rec02;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
 
 
 /**
@@ -38,8 +40,8 @@ public class IntQueueTest {
     @Before
     public void setUp() {
         // comment/uncomment these lines to test each class
-        mQueue = new LinkedIntQueue();
-    //    mQueue = new ArrayIntQueue();
+      //  mQueue = new LinkedIntQueue();
+      mQueue = new ArrayIntQueue();
 
         testList = new ArrayList<>(List.of(1, 2, 3));
     }
@@ -52,20 +54,19 @@ public class IntQueueTest {
 
     @Test
     public void testNotEmpty() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.enqueue(10);
+        assertFalse(mQueue.isEmpty());
     }
 
     @Test
     public void testPeekEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+      assertNull(mQueue.peek());
     }
 
     @Test
     public void testPeekNoEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+       mQueue.enqueue(5);
+       assertEquals(Integer.valueOf(5),mQueue.peek());
     }
 
     @Test
@@ -80,9 +81,14 @@ public class IntQueueTest {
 
     @Test
     public void testDequeue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
-    }
+        mQueue.enqueue(1);
+        mQueue.enqueue(2);
+        mQueue.enqueue(3);
+        assertEquals(Integer.valueOf(1), mQueue.dequeue());
+        assertEquals(Integer.valueOf(2), mQueue.dequeue());
+        assertEquals(Integer.valueOf(3), mQueue.dequeue());
+        assertTrue(mQueue.isEmpty());
+}
 
     @Test
     public void testContent() throws IOException {
@@ -104,6 +110,28 @@ public class IntQueueTest {
             }
         }
     }
+    @Test
+    public void testDequeueEmptyQueue(){
+        assertNull(mQueue.dequeue());
+    }
+    
+   @Test
+public void testResizeAfterWrapAround() {
+    for (int i = 0; i < 10; i++) {
+        mQueue.enqueue(i);
+    }
 
+    for (int i = 0; i < 5; i++) {
+        mQueue.dequeue();
+    }
+
+    for (int i = 10; i < 20; i++) {
+        mQueue.enqueue(i);
+    }
+
+    for (int i = 5; i < 20; i++) {
+        assertEquals(Integer.valueOf(i), mQueue.dequeue());
+    }
+}
 
 }
